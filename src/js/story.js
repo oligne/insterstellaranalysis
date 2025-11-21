@@ -28,9 +28,9 @@ const chapters = {
 
     <br><br>Dans cette séquence, <span class="highlight">la bibliothèque devient le point de contact entre deux dimensions</span> : celle de l'expérience humaine et celle de la physique quantique. Le dialogue entre Cooper et Murph dépasse alors le cadre du réalisme scientifique pour devenir une métaphore du lien, celui qui unit deux consciences au-delà du temps, à travers la liberté prise d'une théorie selon laquelle <span class="highlight">la gravité est la seule force capable de coexister entre les dimensions</span>, ce qui est scientifiquement spéculatif mais conceptuellement cohérent.`,
         images: [
-            { src: "selected_shot/Sequence 01.00_00_52_05.Still008.jpg", subtitle: "Le tesseract dimensionnel" },
-            { src: "selected_shot/Sequence 01.00_01_17_17.Still009.jpg", subtitle: "La bibliothèque interdimensionnelle" },
-            { src: "selected_shot/Sequence 01.00_03_15_12.Still011.jpg", subtitle: "L'espace-temps matérialisé" }
+            { src: "selected_shot/oh.jpg", subtitle: "Le tesseract dimensionnel" },
+            { src: "selected_shot/uh.jpg", subtitle: "La bibliothèque interdimensionnelle" },
+            { src: "selected_shot/eh.jpg", subtitle: "L'espace-temps matérialisé" }
         ]
     },
     4: {
