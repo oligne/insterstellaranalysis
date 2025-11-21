@@ -1,0 +1,23 @@
+{
+  "name": "interactive-story",
+  "version": "1.0.0",
+  "description": "An interactive story application that allows users to navigate through different chapters.",
+  "main": "src/js/main.js",
+  "scripts": {
+    "start": "live-server .",
+    "build": "echo 'Build process can be defined here.'"
+  },
+  "keywords": [
+    "interactive",
+    "story",
+    "javascript",
+    "html",
+    "css"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "live-server": "^1.2.1"
+  }
+}

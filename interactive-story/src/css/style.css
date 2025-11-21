@@ -1,0 +1,591 @@
+/* ===== RESET ET BASE ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background: white;
+    color: #333;
+}
+
+/* ===== INTRO ===== */
+#intro-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+#start-button {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 20px 40px;
+    font-size: 24px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#start-button:hover {
+    background: white;
+    color: black;
+    transform: scale(1.05);
+}
+
+/* ===== VIDÉO INTRO ===== */
+#intro-video-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    display: none;
+    z-index: 9000;
+}
+
+#intro-video {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+}
+
+#intro-audio {
+    display: none;
+}
+
+#skip-intro-button {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 10001;
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 12px 30px;
+    font-size: 16px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#skip-intro-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* ===== CHAPITRES TEXTE (2 & 3) ===== */
+#chapter-content {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: white;
+    z-index: 10;
+}
+
+.main-content-container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+
+/* Colonne de texte (gauche) */
+.text-section {
+    width: 50%; /* AU LIEU DE 65% */
+    height: 100vh;
+    overflow-y: auto;
+    padding: 120px 120px;
+    box-sizing: border-box;
+    background: white;
+}
+
+.text-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.text-container p {
+    margin: 0;
+    text-align: justify;
+    white-space: pre-line;
+}
+
+.text-container br {
+    line-height: 2.5;
+    display: block;
+}
+
+.text-section .highlight {
+    font-family: 'Georgia', 'Baskerville', 'Times New Roman', serif;
+    font-weight: bold;
+    font-style: italic;
+    color: #2c3e50;
+    font-size: 20px;
+    letter-spacing: 0.3px;
+}
+
+.scroll-space {
+    height: 80vh;
+}
+
+/* Schéma dans le texte (chapitre 2) */
+.schema-container-left {
+    width: 100%;
+    text-align: center;
+    margin: 40px 0 30px 0;
+}
+
+.schema-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.schema-caption {
+    font-size: 13px;
+    color: rgba(51, 51, 51, 0.6);
+    margin-top: 10px;
+    font-weight: 300;
+}
+
+/* Colonne d'images (droite) */
+.image-section-right {
+    width: 50%; /* AU LIEU DE 35% */
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #f5f5f5;
+}
+
+.images-container-fixed {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0;
+}
+
+.image-container-fixed {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+.story-image-fixed {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.image-subtitle {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    color: white;
+    padding: 12px 15px;
+    font-size: 12px;
+    font-style: italic;
+    line-height: 1.4;
+    font-weight: 300;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-container-fixed:hover .image-subtitle {
+    opacity: 1;
+}
+
+/* ===== VIDÉO CHAPITRE 5 ===== */
+#chapter-video-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    z-index: 9000;
+}
+
+#chapter-video-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ===== PAGE DE FIN ===== */
+#end-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: white;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===== NAVIGATION (SOMMAIRE) ===== */
+#chapter-navigation {
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    z-index: 10500; /* AU LIEU DE 500 - au dessus de tout */
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px 20px;
+    border-radius: 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.nav-arrow {
+    background: transparent;
+    border: none;
+    color: #000;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.nav-arrow:hover:not(:disabled) {
+    transform: scale(1.2);
+}
+
+.nav-arrow:disabled {
+    color: rgba(0, 0, 0, 0.2);
+    cursor: not-allowed;
+}
+
+#chapter-dots {
+    display: flex;
+    gap: 12px;
+}
+
+.chapter-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #000;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.chapter-dot:hover {
+    transform: scale(1.3);
+}
+
+.chapter-dot.active {
+    transform: scale(1.5);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== WORLD STATE & TIMER ===== */
+#world-state-display {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 400;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-family: 'Courier New', monospace;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: bold;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 15px;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.state-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.state-label {
+    font-size: 9px;
+    opacity: 0.7;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+    color: #cccccc;
+}
+
+.state-value {
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    color: #ffffff;
+}
+
+#time-display {
+    position: fixed;
+    top: 20px;
+    right: 120px; /* Plus près du world state */
+    z-index: 400;
+    display: flex;
+    flex-direction: column; /* EN COLONNE au lieu de row */
+    gap: 12px; /* Gap vertical entre les 2 lignes */
+    font-family: 'Courier New', monospace;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: bold;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 15px;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#time-display > div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Aligner à droite comme world state */
+}
+
+.time-label {
+    font-size: 9px;
+    opacity: 0.7;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+    color: #cccccc;
+}
+
+#earth-counter, #miller-counter {
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    color: #ffffff;
+}
+
+/* ===== TOGGLE LECTURE (H/L) ===== */
+#reading-mode-toggle {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    z-index: 10500; /* Pareil que navigation */
+    display: flex;
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.9); /* Blanc comme sommaire */
+    border-radius: 40px;
+    padding: 12px 18px;
+    box-shadow: 0 2px 10px rgba(220, 220, 220, 0.1); /* Même ombre que sommaire */
+}
+
+#reading-mode-toggle button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    transition: transform 0.2s ease;
+}
+
+#reading-mode-toggle button:hover {
+    transform: scale(1.1);
+}
+
+#reading-mode-toggle img {
+    width: 28px;
+    transition: opacity 0.3s ease;
+}
+
+/* Karaoke mode */
+.word-span {
+    display: inline;
+    transition: opacity 0.3s ease;
+}
+
+/* ===== PANORAMA (CHAPITRE 4) ===== */
+#panorama-container {
+    position: fixed;
+    top: 200px;
+    left: 0;
+    width: 100vw;
+    overflow: hidden;
+    z-index: 96;
+    background: transparent;
+}
+
+.panorama-band {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    will-change: transform;
+    transition: transform 0.1s ease-out;
+}
+
+.panorama-band img {
+    height: auto;
+    width: auto;
+    display: block;
+    align-self: flex-start;
+}
+
+#full-page-gradient {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: white;
+    z-index: 95;
+    pointer-events: none;
+    transition: background-color 0.5s ease;
+}
+
+#particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 97;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 2s ease;
+}
+
+#text-scroll-container {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 100vw;
+    z-index: 98;
+    pointer-events: none;
+    display: flex;
+    will-change: transform;
+}
+
+.scroll-text-block {
+    min-width: 600px;
+    max-width: 700px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.scroll-text-block p {
+    margin: 0;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 22px;
+    line-height: 1.8;
+    color: #333;
+    font-weight: 300;
+    letter-spacing: 0.3px;
+}
+
+#panorama-subtitle-container {
+    position: fixed;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 1000px;
+    text-align: center;
+    z-index: 99;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    pointer-events: none;
+}
+
+#panorama-subtitle-text {
+    margin: 0;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #333;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+}
+
+/* AJOUTER dans style.css : */
+
+#intro-annotations {
+    position: fixed;
+    left: 0px;
+    top: 0; /* Référence en haut de l'écran */
+    z-index: 10001;
+    pointer-events: none;
+    width: 400px;
+    height: 100vh;
+}
+
+#anot1 {
+    position: absolute;
+    left: 0;
+    top: 0vh; /* ← PARAMÈTRE 1 : Position Y de anot1 (0vh = haut, 50vh = centre, 100vh = bas) */
+    max-height: 100vh; /* Taille max 35% de l'écran */
+    width: auto;
+    height: auto;
+    opacity: 0.9;
+}
+
+#anot2 {
+    position: absolute;
+    left: 0;
+    top: 0vh; /* ← PARAMÈTRE 2 : Position Y de anot2 */
+    max-height: 100vh; /* Taille max 35% de l'écran */
+    width: auto;
+    height: auto;
+    opacity: 0.9;
+}
+
+#anot3 {
+    position: absolute;
+    left: 0;
+    top: 0vh; /* ← PARAMÈTRE 3 : Position Y de anot3 */
+    max-height: 100vh; /* Taille max 35% de l'écran */
+    width: auto;
+    height: auto;
+    opacity: 0.9;
+}
+
+#anot4 {
+    position: absolute;
+    left: 0;
+    top: 0vh; /* ← PARAMÈTRE 4 : Position Y de anot4 */
+    max-height: 100vh; /* Taille max 35% de l'écran */
+    width: auto;
+    height: auto;
+    opacity: 0.9;
+}

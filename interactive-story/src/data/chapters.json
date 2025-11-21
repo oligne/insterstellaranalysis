@@ -1,0 +1,82 @@
+{
+  "chapters": [
+    {
+      "id": 1,
+      "title": "Chapter 1: The Beginning",
+      "content": "Once upon a time in a land far away, there lived a brave adventurer. One day, they received a mysterious letter inviting them to a grand quest.",
+      "choices": [
+        {
+          "text": "Accept the quest",
+          "nextChapterId": 2
+        },
+        {
+          "text": "Ignore the letter",
+          "nextChapterId": 3
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Chapter 2: The Quest",
+      "content": "The adventurer accepted the quest and set off on their journey. They encountered a wise old man who offered them advice.",
+      "choices": [
+        {
+          "text": "Listen to the old man",
+          "nextChapterId": 4
+        },
+        {
+          "text": "Continue on their own",
+          "nextChapterId": 5
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Chapter 3: The Missed Opportunity",
+      "content": "By ignoring the letter, the adventurer missed out on a great adventure. They continued their mundane life, wondering what could have been.",
+      "choices": []
+    },
+    {
+      "id": 4,
+      "title": "Chapter 4: The Wise Advice",
+      "content": "The old man shared his wisdom, guiding the adventurer towards a hidden treasure. With newfound knowledge, the adventurer felt ready to face any challenge.",
+      "choices": [
+        {
+          "text": "Seek the treasure",
+          "nextChapterId": 6
+        },
+        {
+          "text": "Return home",
+          "nextChapterId": 3
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Chapter 5: The Lonely Path",
+      "content": "The adventurer chose to continue alone, facing many challenges without guidance. They learned valuable lessons but felt the weight of solitude.",
+      "choices": [
+        {
+          "text": "Seek companionship",
+          "nextChapterId": 2
+        },
+        {
+          "text": "Embrace solitude",
+          "nextChapterId": 7
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Chapter 6: The Treasure",
+      "content": "After a long journey, the adventurer found the treasure. It was not gold or jewels, but the friendships and experiences gained along the way.",
+      "choices": []
+    },
+    {
+      "id": 7,
+      "title": "Chapter 7: The Journey Within",
+      "content": "Embracing solitude, the adventurer discovered their true self. They realized that the greatest adventure lies within.",
+      "choices": []
+    }
+  ]
+}
