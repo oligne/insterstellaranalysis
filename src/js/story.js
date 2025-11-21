@@ -28,9 +28,9 @@ const chapters = {
 
     <br><br>Dans cette séquence, <span class="highlight">la bibliothèque devient le point de contact entre deux dimensions</span> : celle de l'expérience humaine et celle de la physique quantique. Le dialogue entre Cooper et Murph dépasse alors le cadre du réalisme scientifique pour devenir une métaphore du lien, celui qui unit deux consciences au-delà du temps, à travers la liberté prise d'une théorie selon laquelle <span class="highlight">la gravité est la seule force capable de coexister entre les dimensions</span>, ce qui est scientifiquement spéculatif mais conceptuellement cohérent.`,
         images: [
-            { src: "../selected_shot/Séquence 01.00_00_52_05.Still008.jpg", subtitle: "Le tesseract dimensionnel" },
-            { src: "../selected_shot/Séquence 01.00_01_17_17.Still009.jpg", subtitle: "La bibliothèque interdimensionnelle" },
-            { src: "../selected_shot/Séquence 01.00_03_15_12.Still011.jpg", subtitle: "L'espace-temps matérialisé" }
+            { src: "selected_shot/Sequence 01.00_00_52_05.Still008.jpg", subtitle: "Le tesseract dimensionnel" },
+            { src: "selected_shot/Sequence 01.00_01_17_17.Still009.jpg", subtitle: "La bibliothèque interdimensionnelle" },
+            { src: "selected_shot/Sequence 01.00_03_15_12.Still011.jpg", subtitle: "L'espace-temps matérialisé" }
         ]
     },
     4: {
@@ -39,9 +39,9 @@ const chapters = {
         showTimeDisplay: true,
         isPanorama: true,
         panoramas: [
-            { src: "../../pano1.png", speed: 1 },
-            { src: "../../pano2.png", speed: 1 },
-            { src: "../../pano3.png", speed: 1, overlapAmount: 2649.8746 }
+            { src: "pano1.png", speed: 1 },
+            { src: "pano2.png", speed: 1 },
+            { src: "pano3.png", speed: 1, overlapAmount: 2649.8746 }
         ]
     },
     5: {
@@ -49,7 +49,7 @@ const chapters = {
         showTimeDisplay: true,
         showWorldState: true,
         isVideo: true,
-        video: { src: "../../SEQ_02.mp4" }
+        video: { src: "SEQ_02.mp4" }
     }
 };
 
@@ -248,7 +248,7 @@ function displayTextChapter(chapter) {
     if (currentChapter === 2) {
         const schema = document.createElement('div');
         schema.className = 'schema-container-left';
-        schema.innerHTML = `<img src="../../Explication01.png" class="schema-image"><div class="schema-caption">Schéma des temporalités entremêlées</div>`;
+        schema.innerHTML = `<img src="Explication01.png" class="schema-image"><div class="schema-caption">Schéma des temporalités entremêlées</div>`;
         textSection.appendChild(schema);
     }
     
@@ -537,8 +537,8 @@ function createReadingModeToggle() {
     `;
     
     toggle.innerHTML = `
-        <button id="mode-H" style="background: transparent; border: none; cursor: pointer; padding: 8px;"><img src="../../Hn.png" style="width: 28px; opacity: 1;"></button>
-        <button id="mode-L" style="background: transparent; border: none; cursor: pointer; padding: 8px;"><img src="../../Lg.png" style="width: 28px; opacity: 0.4;"></button>
+        <button id="mode-H" style="background: transparent; border: none; cursor: pointer; padding: 8px;"><img src="Hn.png" style="width: 28px; opacity: 1;"></button>
+        <button id="mode-L" style="background: transparent; border: none; cursor: pointer; padding: 8px;"><img src="Lg.png" style="width: 28px; opacity: 0.4;"></button>
     `;
     
     document.body.appendChild(toggle);
@@ -551,9 +551,9 @@ function createReadingModeToggle() {
         mode = 'H';
         
         // Changer les images
-        document.querySelector('#mode-H img').src = '../../Hn.png';
+        document.querySelector('#mode-H img').src = 'Hn.png';
         document.querySelector('#mode-H img').style.opacity = '1';
-        document.querySelector('#mode-L img').src = '../../Lg.png';
+        document.querySelector('#mode-L img').src = 'Lg.png';
         document.querySelector('#mode-L img').style.opacity = '0.4';
         
         startKaraoke();
@@ -564,9 +564,9 @@ function createReadingModeToggle() {
         mode = 'L';
         
         // Changer les images
-        document.querySelector('#mode-L img').src = '../../Ln.png';
+        document.querySelector('#mode-L img').src = 'Ln.png';
         document.querySelector('#mode-L img').style.opacity = '1';
-        document.querySelector('#mode-H img').src = '../../Hg';
+        document.querySelector('#mode-H img').src = 'Hg';
         document.querySelector('#mode-H img').style.opacity = '0.4';
         
         if (interval) clearInterval(interval);
