@@ -13,9 +13,9 @@ const chapters = {
         showTimeDisplay: true,
         text: `Interstellar c'est un <span class="highlight">voyage dans les rouages du temps</span> dans un monde à qui il n'en reste que très peu. Si l'idée d'être prisonnier de l'espace était déjà terrifiante, <span class="highlight">être prisonnier du temps</span> prend un tout autre sens. Si l'œuvre cinématographique est contemplative, mystérieuse et nous fait tomber de haut au premier visionnage, c’est lors des suivants qu’elle nous fait frissonner. <br><br>Selon mon interprétation, la film gagne en puissance lorsque l’on à le pouvoir en tant que spectateur, de <span class="highlight">posséder des éléments qui n’appartiennent pas encore à la temporalité que l’on regarde du film.</span> Nous regardons des scènes en connaissant déjà leur écho, leurs conséquences, leurs résonances lointaines, mais nous ne sommes que <span class="highlight">spectateur d’un passé déjà joué.</span> <br><br>C’est grâce à la <span class="highlight">superposition temporelle</span> de différents éléments du film, en ayant déjà vu et saisi les enjeux de l’univers dans lequel nous plonge Christopher Nolan. C’est à travers un bouleversement des rapports temps-espace que nous pouvons comprendre la puissance du récit et se plonger dans un monde où <span class="highlight">l’espace-temps devient malléable.</span> Ainsi, les trois premières scènes du film nous présentent différentes temporalités qui s’entremêlent dans notre récit.`,
         images: [
-            { src: "../selected_shot/02 (504).jpg", subtitle: "00:01:04 Murphy est une femme agée, elle conte son histoire au passé." },
-            { src: "../selected_shot/21 (514).jpg", subtitle: "00:01:25 Extrait du décollage de la mission Endurance." },
-            { src: "../selected_shot/07 (504).jpg", subtitle: "00:01:45 Murphy jeune, vit les événements en temps réel." }
+            { src: "../../selected_shot/02 (504).jpg", subtitle: "00:01:04 Murphy est une femme agée, elle conte son histoire au passé." },
+            { src: "../../selected_shot/21 (514).jpg", subtitle: "00:01:25 Extrait du décollage de la mission Endurance." },
+            { src: "../../selected_shot/07 (504).jpg", subtitle: "00:01:45 Murphy jeune, vit les événements en temps réel." }
         ]
     },
     3: {
@@ -28,9 +28,9 @@ const chapters = {
 
     <br><br>Dans cette séquence, <span class="highlight">la bibliothèque devient le point de contact entre deux dimensions</span> : celle de l'expérience humaine et celle de la physique quantique. Le dialogue entre Cooper et Murph dépasse alors le cadre du réalisme scientifique pour devenir une métaphore du lien, celui qui unit deux consciences au-delà du temps, à travers la liberté prise d'une théorie selon laquelle <span class="highlight">la gravité est la seule force capable de coexister entre les dimensions</span>, ce qui est scientifiquement spéculatif mais conceptuellement cohérent.`,
         images: [
-            { src: "../selected_shot/Séquence 01.00_00_52_05.Still008.jpg", subtitle: "Le tesseract dimensionnel" },
-            { src: "../selected_shot/Séquence 01.00_01_17_17.Still009.jpg", subtitle: "La bibliothèque interdimensionnelle" },
-            { src: "../selected_shot/Séquence 01.00_03_15_12.Still011.jpg", subtitle: "L'espace-temps matérialisé" }
+            { src: "../../selected_shot/Séquence 01.00_00_52_05.Still008.jpg", subtitle: "Le tesseract dimensionnel" },
+            { src: "../../selected_shot/Séquence 01.00_01_17_17.Still009.jpg", subtitle: "La bibliothèque interdimensionnelle" },
+            { src: "../../selected_shot/Séquence 01.00_03_15_12.Still011.jpg", subtitle: "L'espace-temps matérialisé" }
         ]
     },
     4: {
@@ -39,9 +39,9 @@ const chapters = {
         showTimeDisplay: true,
         isPanorama: true,
         panoramas: [
-            { src: "../pano1.png", speed: 1 },
-            { src: "../pano2.png", speed: 1 },
-            { src: "../pano3.png", speed: 1, overlapAmount: 2649.8746 }
+            { src: "../../pano1.png", speed: 1 },
+            { src: "../../pano2.png", speed: 1 },
+            { src: "../../pano3.png", speed: 1, overlapAmount: 2649.8746 }
         ]
     },
     5: {
@@ -49,7 +49,7 @@ const chapters = {
         showTimeDisplay: true,
         showWorldState: true,
         isVideo: true,
-        video: { src: "../SEQ_02.mp4" }
+        video: { src: "../../SEQ_02.mp4" }
     }
 };
 
@@ -248,7 +248,7 @@ function displayTextChapter(chapter) {
     if (currentChapter === 2) {
         const schema = document.createElement('div');
         schema.className = 'schema-container-left';
-        schema.innerHTML = `<img src="../Explication01.png" class="schema-image"><div class="schema-caption">Schéma des temporalités entremêlées</div>`;
+        schema.innerHTML = `<img src="../../Explication01.png" class="schema-image"><div class="schema-caption">Schéma des temporalités entremêlées</div>`;
         textSection.appendChild(schema);
     }
     
@@ -537,8 +537,8 @@ function createReadingModeToggle() {
     `;
     
     toggle.innerHTML = `
-        <button id="mode-H" style="background: transparent; border: none; cursor: pointer; padding: 8px;"><img src="../Hn.png" style="width: 28px; opacity: 1;"></button>
-        <button id="mode-L" style="background: transparent; border: none; cursor: pointer; padding: 8px;"><img src="../Lg.png" style="width: 28px; opacity: 0.4;"></button>
+        <button id="mode-H" style="background: transparent; border: none; cursor: pointer; padding: 8px;"><img src="../../Hn.png" style="width: 28px; opacity: 1;"></button>
+        <button id="mode-L" style="background: transparent; border: none; cursor: pointer; padding: 8px;"><img src="../../Lg.png" style="width: 28px; opacity: 0.4;"></button>
     `;
     
     document.body.appendChild(toggle);
@@ -551,9 +551,9 @@ function createReadingModeToggle() {
         mode = 'H';
         
         // Changer les images
-        document.querySelector('#mode-H img').src = '../Hn.png';
+        document.querySelector('#mode-H img').src = '../../Hn.png';
         document.querySelector('#mode-H img').style.opacity = '1';
-        document.querySelector('#mode-L img').src = '../Lg.png';
+        document.querySelector('#mode-L img').src = '../../Lg.png';
         document.querySelector('#mode-L img').style.opacity = '0.4';
         
         startKaraoke();
@@ -564,9 +564,9 @@ function createReadingModeToggle() {
         mode = 'L';
         
         // Changer les images
-        document.querySelector('#mode-L img').src = '../Ln.png';
+        document.querySelector('#mode-L img').src = '../../Ln.png';
         document.querySelector('#mode-L img').style.opacity = '1';
-        document.querySelector('#mode-H img').src = '../Hg';
+        document.querySelector('#mode-H img').src = '../../Hg';
         document.querySelector('#mode-H img').style.opacity = '0.4';
         
         if (interval) clearInterval(interval);
