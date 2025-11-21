@@ -13,9 +13,9 @@ const chapters = {
         showTimeDisplay: true,
         text: `Interstellar c'est un <span class="highlight">voyage dans les rouages du temps</span> dans un monde à qui il n'en reste que très peu. Si l'idée d'être prisonnier de l'espace était déjà terrifiante, <span class="highlight">être prisonnier du temps</span> prend un tout autre sens. Si l'œuvre cinématographique est contemplative, mystérieuse et nous fait tomber de haut au premier visionnage, c’est lors des suivants qu’elle nous fait frissonner. <br><br>Selon mon interprétation, la film gagne en puissance lorsque l’on à le pouvoir en tant que spectateur, de <span class="highlight">posséder des éléments qui n’appartiennent pas encore à la temporalité que l’on regarde du film.</span> Nous regardons des scènes en connaissant déjà leur écho, leurs conséquences, leurs résonances lointaines, mais nous ne sommes que <span class="highlight">spectateur d’un passé déjà joué.</span> <br><br>C’est grâce à la <span class="highlight">superposition temporelle</span> de différents éléments du film, en ayant déjà vu et saisi les enjeux de l’univers dans lequel nous plonge Christopher Nolan. C’est à travers un bouleversement des rapports temps-espace que nous pouvons comprendre la puissance du récit et se plonger dans un monde où <span class="highlight">l’espace-temps devient malléable.</span> Ainsi, les trois premières scènes du film nous présentent différentes temporalités qui s’entremêlent dans notre récit.`,
         images: [
-            { src: "../../selected_shot/02 (504).jpg", subtitle: "00:01:04 Murphy est une femme agée, elle conte son histoire au passé." },
-            { src: "../../selected_shot/21 (514).jpg", subtitle: "00:01:25 Extrait du décollage de la mission Endurance." },
-            { src: "../../selected_shot/07 (504).jpg", subtitle: "00:01:45 Murphy jeune, vit les événements en temps réel." }
+            { src: "selected_shot/02 (504).jpg", subtitle: "00:01:04 Murphy est une femme agée, elle conte son histoire au passé." },
+            { src: "selected_shot/21 (514).jpg", subtitle: "00:01:25 Extrait du décollage de la mission Endurance." },
+            { src: "selected_shot/07 (504).jpg", subtitle: "00:01:45 Murphy jeune, vit les événements en temps réel." }
         ]
     },
     3: {
