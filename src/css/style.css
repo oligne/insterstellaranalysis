@@ -461,6 +461,16 @@ body, html {
     align-self: flex-start;
 }
 
+/* Highlight pour les textes du panorama - MÊME STYLE que chapitres 2 et 3 */
+#text-scroll-container .highlight {
+    font-family: 'Georgia', 'Baskerville', 'Times New Roman', serif;
+    font-weight: bold;
+    font-style: italic;
+    color: #2c3e50;
+    font-size: 15px;
+    letter-spacing: 0.3px;
+}
+
 #full-page-gradient {
     position: fixed;
     top: 0;
@@ -589,3 +599,4 @@ body, html {
     height: auto;
     opacity: 0.9;
 }
+

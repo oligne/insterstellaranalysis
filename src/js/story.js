@@ -45,6 +45,13 @@ const chapters = {
         ]
     },
     5: {
+        title: "Analyse",
+        showWorldState: false,
+        showTimeDisplay: false,
+        isAnalysis: true,
+        text: `Ce qui me touche profondément dans Interstellar, et qui entre en résonance directe avec mon projet de mémoire, c'est la manière dont le film construit des espaces où le temps devient tangible, habitable, presque architectural. Le tesseract, avec ses multiples dimensions accessibles comme autant de pièces dans une maison, illustre parfaitement cette idée : le passé devient un espace que l'on traverse, et chaque souvenir ou événement peut être approché de manière concrète, presque physique. Cette spatialisation du temps rejoint directement mes recherches sur l'espace numérique et la question de son habitabilité, où nos traces, nos données et nos souvenirs ne sont plus simplement des informations abstraites, mais un milieu dans lesquels nous évoluons, que l'on habite, que l'on transforme, et que l'on structure tant qu'il nous structure.<br><br>Habiter ne se limite pas aux lieux matériels, aux murs et aux sols que l'on occupe, il s'agit aussi de circuler dans des structures sensibles, où se mêlent vécu, mémoire, projection et anticipation. (Cf. Habiter, Batir, Penser, Heidegger) Interstellar transforme des concepts immatériels, le temps, l'espace, la distance affective, en environnements perceptibles et manipulables. Tout comme semblent le faire les outils numériques à moindre mesure, et tout comme le font les outils numériques poussés à l'extrême dans la situation finale du film.<br><br>Cette manière de représenter le temps comme matière et lieu m'aide à penser mes propres questions autour de l'habiter numérique. Dans le monde numérique, nous évoluons dans des espaces qui ne sont pas faits de murs mais de flux, de données et de souvenirs stockés, réinterprétés et réorganisés en permanence. Nos pratiques de l'espace numérique, qu'il s'agisse d'écrire, d'archiver ou de réinterroger nos expériences passées, créent des tesseracts personnels, des environnements où notre mémoire, notre identité et notre histoire se superposent et se construisent en interaction, et plus en temps et en distance. Interstellar rend sensible ce que ces milieux numériques ont de matériel et d'expérimental : on peut sentir l'architecture du temps, la pesanteur des souvenirs, la profondeur des strates que l'on habite, même virtuellement.<br><br>Le film éclaire aussi le rôle de la technologie comme médiation de l'habiter. Les dispositifs scientifiques n'y sont pas de simples outils, ils deviennent des interfaces pour percevoir et interagir avec des réalités autrement imperceptibles. Dans le tesseract, chaque étagère, chaque lumière et chaque mouvement participe à la fabrication et à la transformation d'un point de l'espace dans le temps. Cela fait écho à ma réflexion sur le numérique, où les interfaces, les logiciels, les plateformes et les environnements virtuels structurent notre rapport au monde et à nous-mêmes, tout en conservant et en faisant usage des traces de nos existences. Habiter un espace numérique, c'est circuler dans ces couches invisibles, en naviguant entre archives, traces et projections futures.<br><br>Au-delà de cette dimension spéculative, Interstellar met en avant la subjectivité de l'expérience de l'espace et du temps. Le film montre que chaque individu habite ses propres temporalités, que chaque mémoire est un espace en soi. Cette idée rejoint mes recherches sur l'appropriation des espaces immatériels : qu'il s'agisse de nos souvenirs, de nos données ou de nos récits, chaque pratique construit un territoire, un milieu que l'on investit et transforme à notre manière.<br><br>Enfin, le film ouvre un champ de possibles pour repenser la notion d'habiter au sens large. Il propose que l'habiter ne se limite pas à l'occupation d'un espace physique, mais inclut la manière dont nous interagissons avec nos souvenirs, nos traces et nos projections. Il suggère que chaque environnement, matériel ou immatériel, est façonné par les interactions, les choix et les expériences de ceux qui l'occupent. Dans cette perspective, nos milieux numériques, nos archives personnelles et nos environnements vécus deviennent des espaces réels, à part entière, capables d'influencer notre manière d'être et de nous construire. Interstellar montre comment la fiction peut rendre visible et sensible l'invisible, comment elle peut transformer des concepts abstraits en espaces à habiter, et comment elle ouvre des voies pour penser l'habiter dans des milieux qui dépassent le concret et l'immédiat.`
+    },
+    6: {
         title: "Séquence vidéo",
         showTimeDisplay: true,
         showWorldState: true,
@@ -87,13 +94,23 @@ function displayChapter(chapterId) {
     
     currentChapter = chapterId;
     
-    // NETTOYAGE TOTAL
-    ['chapter-content', 'chapter-video-container', 'panorama-container', 'full-page-gradient', 
-     'particle-canvas', 'text-scroll-container', 'panorama-subtitle-container', 'end-page', 
-     'reading-mode-toggle', 'skip-intro-button', 'skip-video-button'].forEach(id => { // AJOUTER skip-video-button
-        const el = document.getElementById(id);
-        if (el) el.remove();
-    });
+    // NETTOYAGE (SAUF si on passe du chap 4 au chap 5)
+    const skipCleanup = (chapterId === 5 && chapters[4]?.isPanorama);
+    
+    if (!skipCleanup) {
+        ['chapter-content', 'chapter-video-container', 'panorama-container', 'full-page-gradient', 
+         'particle-canvas', 'text-scroll-container', 'panorama-subtitle-container', 'end-page', 
+         'reading-mode-toggle', 'skip-intro-button', 'skip-video-button', 'analysis-text-container'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+        });
+    } else {
+        // Nettoyer uniquement les éléments du panorama, PAS les particules
+        ['panorama-container', 'text-scroll-container', 'reading-mode-toggle'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+        });
+    }
     
     const introContainer = document.getElementById('intro-video-container');
     if (introContainer) {
@@ -103,7 +120,9 @@ function displayChapter(chapterId) {
         // NE PAS ARRÊTER L'AUDIO
     }
     
-    if (window.karaokeInterval) clearInterval(window.karaokeInterval);
+      if (currentChapter !== 5 && window.karaokeInterval) {
+        clearInterval(window.karaokeInterval);
+    }
     if (window.panoramaWheelListener) window.removeEventListener('wheel', window.panoramaWheelListener);
     window.animationRunning = false;
     
@@ -144,6 +163,8 @@ function displayChapter(chapterId) {
         chapter.isIntro ? displayIntroVideo() : displayVideoChapter(chapter);
     } else if (chapter.isPanorama) {
         displayPanoramaChapter(chapter);
+    } else if (chapter.isAnalysis) {
+        displayAnalysisChapter(chapter);
     } else {
         displayTextChapter(chapter);
     }
@@ -366,7 +387,7 @@ function displayVideoChapter(chapter) {
 
 // ===== PAGE DE FIN =====
 function displayEndPage() {
-    currentChapter = 6;
+    currentChapter = 7;
     
     // NETTOYER TOUS LES ÉLÉMENTS
     ['chapter-content', 'chapter-video-container', 'panorama-container', 'full-page-gradient', 
@@ -439,11 +460,12 @@ function createChapterNavigation() {
         () => displayChapter(2),
         () => displayChapter(3),
         () => displayChapter(4),
-        () => displayChapter(5),
+        () => displayChapter(5), // Analyse
+        () => displayChapter(6), // Vidéo
         () => displayEndPage()
     ];
     
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 7; i++) { // 7 dots
         const dot = document.createElement('div');
         dot.className = 'chapter-dot';
         if (i + 1 === currentChapter) dot.classList.add('active');
@@ -456,8 +478,8 @@ function createChapterNavigation() {
     };
     
     document.getElementById('next-chapter').onclick = () => {
-        if (currentChapter < 5) displayChapter(currentChapter + 1);
-        else if (currentChapter === 5) displayEndPage();
+        if (currentChapter < 6) displayChapter(currentChapter + 1);
+        else if (currentChapter === 6) displayEndPage();
     };
     
     updateChapterNavigation();
@@ -469,7 +491,10 @@ function updateChapterNavigation() {
     });
 }
 
-// ===== WORLD STATE & TIMER =====
+
+
+
+
 function createWorldStateDisplay() {
     const display = document.createElement('div');
     display.id = 'world-state-display';
@@ -519,7 +544,11 @@ function startTimers() {
     }, 1000);
 }
 
-// ===== TOGGLE LECTURE =====
+
+
+
+
+//MODES DE LECTURE
 function createReadingModeToggle() {
     const toggle = document.createElement('div');
     toggle.id = 'reading-mode-toggle';
@@ -546,6 +575,8 @@ function createReadingModeToggle() {
     let mode = 'H';
     let interval = null;
     
+    // CORRIGER le bouton mode-H pour relancer correctement (ligne ~560) :
+
     document.getElementById('mode-H').onclick = () => {
         if (mode === 'H') return;
         mode = 'H';
@@ -556,9 +587,24 @@ function createReadingModeToggle() {
         document.querySelector('#mode-L img').src = 'Lg.png';
         document.querySelector('#mode-L img').style.opacity = '0.4';
         
+        // ARRÊTER TOUS LES INTERVALS avant de relancer
+        if (window.karaokeInterval) clearInterval(window.karaokeInterval);
+        
+        // Nettoyer tous les intervals des blocs panorama
+        document.querySelectorAll('.scroll-text-block').forEach(block => {
+            const p = block.querySelector('p');
+            if (p?.dataset.karaokeInterval) {
+                clearInterval(parseInt(p.dataset.karaokeInterval));
+                delete p.dataset.karaokeInterval;
+            }
+            delete block.dataset.karaokeStarted; // Réinitialiser le flag
+        });
+        
         startKaraoke();
     };
     
+    // CORRIGER le bouton mode-L dans createReadingModeToggle (ligne ~575) :
+
     document.getElementById('mode-L').onclick = () => {
         if (mode === 'L') return;
         mode = 'L';
@@ -566,72 +612,230 @@ function createReadingModeToggle() {
         // Changer les images
         document.querySelector('#mode-L img').src = 'Ln.png';
         document.querySelector('#mode-L img').style.opacity = '1';
-        document.querySelector('#mode-H img').src = 'Hg';
+        document.querySelector('#mode-H img').src = 'Hg.png';
         document.querySelector('#mode-H img').style.opacity = '0.4';
         
-        if (interval) clearInterval(interval);
-        document.querySelector('.text-container p').innerHTML = chapters[currentChapter].text;
+        // ARRÊTER TOUS LES INTERVALS
+        if (window.karaokeInterval) clearInterval(window.karaokeInterval);
+        
+        // Nettoyer tous les intervals des blocs panorama
+        document.querySelectorAll('.scroll-text-block').forEach(block => {
+            if (block.querySelector('p')?.dataset.karaokeInterval) {
+                clearInterval(block.querySelector('p').dataset.karaokeInterval);
+            }
+        });
+        
+        // Restaurer le texte selon le chapitre
+        const panoramaBlocks = document.querySelectorAll('.scroll-text-block');
+        const analysisP = document.querySelector('#analysis-text-container p');
+        const textP = document.querySelector('.text-container p');
+        
+        if (panoramaBlocks.length > 0) {
+            // CHAPITRE 4 : restaurer tous les blocs
+            const loremTexts = [
+                'Le futur décrit par Christopher Nolan en 2014 est sobre mais peu éloigné de notre réalité. Il imagine, dans une vision plutôt court-terme, nos sociétés une soixantaine d`années plus loin. Le monde n\'a pas changé drastiquement mais à visiblement suivi un <span class="highlight">glissement progréssif vers un appauvrissement global</span> : La qualité de l\'air s\'est grandement dégradée, les ressources de nourritures ont manqué, les professionnels des groupes tertiaires et secondaires ont été amenés à se retourner vers le secteur primaire. Comme dis plus tôt, la population s\'est réduite, les Hommes qui ont survécu ont été contraints de se tourner vers la production de ressources collectives et essentielles.<br><br>Est-ce l\'œuvre de l\'homme qui a mené à sa perte ? Le scénario reste <span class="highlight">plutôt discret sur les raisons de cet effondrement.</span> Cependant, on observe clairement une négation des sciences et un refus des technologies dans la société de l\'époque décrite par Christopher Nolan : Murphy est exclue pendant trois jours pour avoir défendu la véracité des pas de Neil Armstrong sur la Lune. Dès lors, on peut supposer un positionnement du réalisateur, qui laisse entendre <span class="highlight">qu\'un usage excessif des technologies aurait fini par pousser l\'humanité à les rejeter, à les exclure de son quotidien</span> et à reconstruire un futur qui lui semblerait plus sain.',
+                'Mais très vite, Murphy, Cooper et le spectateur font la découverte du programme Endurance. Paradoxalement, alors même que l\'État enseigne aux élèves que la technologie est inutile, dangereuse ou mensongère, il continue en secret de préparer et de financer le futur programme spatial. Tandis qu\'on prêche publiquement un retour à la terre et une méfiance totale envers les sciences, <span class="highlight">une élite scientifique travaille clandestinement à créer une nouvelle humanité ailleurs.</span> Cette hypocrisie est renforcée par le fait que la véritable mission n\'a jamais été de sauver la population terrestre : le plan A, <span class="highlight">celui d\'un exode collectif,</span> pour lequel Cooper est missionné pour trouver une planète d\'exil <span class="highlight">n\'a jamais vraiment existé.</span> Le but réel, le plan B de faire naître des milliers d\'embryons sur une autre planète habitable, en abandonnant ceux restés sur Terre.<br><br>Évidemment, Cooper, en tant que héros du film, refuse cette logique froide et technocratique. <span class="highlight">Il fait le choix du cœur : celui de sauver sa fille, de tenter de la retrouver, et par extension celui de sauver les habitants de la Terre.</span> Il devient le seul à croire encore au plan A, quand bien même aucune planète réellement habitable n\'a été trouvée durant leur voyage. Il renonce finalement à poursuivre l\'exploration pour revenir vers ce qui l\'attache au monde, quittant le champ de la mission pour celui du lien familial.',
+                'La fin du film laisse d\'ailleurs entendre que la Terre, ou plutôt l\'humanité, a survécu grâce à cette décision. Les images de l\'outro montrent un espace qui <span class="highlight">n\'obéit plus aux lois dimensionnelles ordinaires</span> : un horizon vertical, une courbure étrange de l\'espace, une station cylindrique qui imite la gravité par rotation. Tout semble évoquer un monde construit selon les principes découverts dans le tesseract. On comprend que les humains ne vivent plus sur Terre, mais dans <span class="highlight">une structure artificielle où la réalité paraît presque virtuelle</span>, comme un environnement simulé pour <span class="highlight">reproduire la vie terrestre.</span><br><br>Ce qui nous semble utopique, c\'est la manière dont le film transforme un <span class="highlight">enchaînement d\'effondrements</span>, de mensonges institutionnels et de dérives technocratiques en une issue presque harmonieuse. Interstellar propose dans son dénouement un futur où une humanité réduite, fragilisée et réfugiée dans une structure spatiale artificielle parvient malgré tout à recréer une forme de quotidien apaisé. Cette utopie repose sur l\'idée qu\'une science extrême, <span class="highlight">quasi démiurgique</span>, peut miraculeusement devenir le prolongement d\'une théorie selon laquelle <span class="highlight">la gravité est la seule force capable de coexister entre les dimensions</span>, ce qui est scientifiquement spéculatif mais conceptuellement cohérent.',
+                'Finalement, alors même que le film critique la gestion technocratique du plan B, il confirme l\'idée que le salut vient malgré tout de la technoscience. Il la moralise, il l\'humanise, il la rend sensible, mais <span class="highlight">il la reconduit comme solution ultime.</span> L\'amour devient une force narrative qui harmonise ce qui, dans la réalité, relèverait de tensions politiques insolubles. Cette articulation entre <span class="highlight">science extrême et affect pur fonctionne esthétiquement,</span> c\'est l\'un des grands pouvoirs du film, mais elle masque aussi un aspect <span class="highlight">idéologiquement conservateur</span> : l\'aplanissement des conflits, la dépolitisation de l\'effondrement, la naturalisation de l\'inégalité entre ceux qui savent et ceux qui ne savent pas. <br><br>Ainsi, Interstellar oscille entre une <span class="highlight">critique implicite du présent,</span> effondrement écologique, déni du savoir, manipulations institutionnelles et une <span class="highlight">reconduction des récits dominants de notre époque</span> : héroïsme individuel, foi dans la grande solution technologique, déplacement spatial plutôt que transformation sociale. Le futur qu\'il propose est à la fois étranger et rassurant, vertigineux et familier, profondément spéculatif mais idéologiquement conservateur. Il offre une altérité spectaculaire, mais une continuité politique : <span class="highlight">un monde nouveau, façonné pour n\'être finalement que le reflet légèrement distordu de l\'ancien.</span>'
+            ];
+            
+            panoramaBlocks.forEach((block, i) => {
+                const p = block.querySelector('p');
+                if (p) {
+                    p.innerHTML = loremTexts[i];
+                    delete block.dataset.karaokeStarted; // Réinitialiser pour permettre le relancement
+                }
+            });
+        } else if (analysisP) {
+            // CHAPITRE 5
+            analysisP.innerHTML = chapters[5].text;
+        } else if (textP) {
+            // CHAPITRES 2 ou 3
+            textP.innerHTML = chapters[currentChapter].text;
+        }
     };
     
     function startKaraoke() {
-        const p = document.querySelector('.text-container p');
-        p.innerHTML = chapters[currentChapter].text;
-        
-        const walker = document.createTreeWalker(p, NodeFilter.SHOW_TEXT);
-        const textNodes = [];
-        let node;
-        while (node = walker.nextNode()) if (node.textContent.trim()) textNodes.push(node);
-        
-        textNodes.forEach(textNode => {
-            const words = textNode.textContent.split(/(\s+)/);
-            const fragment = document.createDocumentFragment();
-            words.forEach(word => {
-                if (word.trim()) {
-                    const span = document.createElement('span');
-                    span.className = 'word-span';
-                    span.textContent = word;
-                    span.style.opacity = '0.15';
-                    fragment.appendChild(span);
-                } else {
-                    fragment.appendChild(document.createTextNode(word));
-                }
-            });
-            textNode.parentNode.replaceChild(fragment, textNode);
-        });
-        
-        const allWords = p.querySelectorAll('.word-span');
-        let index = 0;
-        
-        function update() {
-            if (index >= allWords.length) index = 0;
+        // Sélectionner le paragraphe selon le chapitre
+        const analysisP = document.querySelector('#analysis-text-container p');
+        const textP = document.querySelector('.text-container p');
+        const panoramaBlocks = document.querySelectorAll('.scroll-text-block');
 
+        // SI ON EST SUR LE PANORAMA (chapitre 4)
+        if (panoramaBlocks.length > 0) {
+            const loremTexts = [
+                'Le futur décrit par Christopher Nolan en 2014 est sobre mais peu éloigné de notre réalité. Il imagine, dans une vision plutôt court-terme, nos sociétés une soixantaine d`années plus loin. Le monde n\'a pas changé drastiquement mais à visiblement suivi un <span class="highlight">glissement progréssif vers un appauvrissement global</span> : La qualité de l\'air s\'est grandement dégradée, les ressources de nourritures ont manqué, les professionnels des groupes tertiaires et secondaires ont été amenés à se retourner vers le secteur primaire. Comme dis plus tôt, la population s\'est réduite, les Hommes qui ont survécu ont été contraints de se tourner vers la production de ressources collectives et essentielles.<br><br>Est-ce l\'œuvre de l\'homme qui a mené à sa perte ? Le scénario reste <span class="highlight">plutôt discret sur les raisons de cet effondrement.</span> Cependant, on observe clairement une négation des sciences et un refus des technologies dans la société de l\'époque décrite par Christopher Nolan : Murphy est exclue pendant trois jours pour avoir défendu la véracité des pas de Neil Armstrong sur la Lune. Dès lors, on peut supposer un positionnement du réalisateur, qui laisse entendre <span class="highlight">qu\'un usage excessif des technologies aurait fini par pousser l\'humanité à les rejeter, à les exclure de son quotidien</span> et à reconstruire un futur qui lui semblerait plus sain.',
+                'Mais très vite, Murphy, Cooper et le spectateur font la découverte du programme Endurance. Paradoxalement, alors même que l\'État enseigne aux élèves que la technologie est inutile, dangereuse ou mensongère, il continue en secret de préparer et de financer le futur programme spatial. Tandis qu\'on prêche publiquement un retour à la terre et une méfiance totale envers les sciences, <span class="highlight">une élite scientifique travaille clandestinement à créer une nouvelle humanité ailleurs.</span> Cette hypocrisie est renforcée par le fait que la véritable mission n\'a jamais été de sauver la population terrestre : le plan A, <span class="highlight">celui d\'un exode collectif,</span> pour lequel Cooper est missionné pour trouver une planète d\'exil <span class="highlight">n\'a jamais vraiment existé.</span> Le but réel, le plan B de faire naître des milliers d\'embryons sur une autre planète habitable, en abandonnant ceux restés sur Terre.<br><br>Évidemment, Cooper, en tant que héros du film, refuse cette logique froide et technocratique. <span class="highlight">Il fait le choix du cœur : celui de sauver sa fille, de tenter de la retrouver, et par extension celui de sauver les habitants de la Terre.</span> Il devient le seul à croire encore au plan A, quand bien même aucune planète réellement habitable n\'a été trouvée durant leur voyage. Il renonce finalement à poursuivre l\'exploration pour revenir vers ce qui l\'attache au monde, quittant le champ de la mission pour celui du lien familial.',
+                'La fin du film laisse d\'ailleurs entendre que la Terre, ou plutôt l\'humanité, a survécu grâce à cette décision. Les images de l\'outro montrent un espace qui <span class="highlight">n\'obéit plus aux lois dimensionnelles ordinaires</span> : un horizon vertical, une courbure étrange de l\'espace, une station cylindrique qui imite la gravité par rotation. Tout semble évoquer un monde construit selon les principes découverts dans le tesseract. On comprend que les humains ne vivent plus sur Terre, mais dans <span class="highlight">une structure artificielle où la réalité paraît presque virtuelle</span>, comme un environnement simulé pour <span class="highlight">reproduire la vie terrestre.</span><br><br>Ce qui nous semble utopique, c\'est la manière dont le film transforme un <span class="highlight">enchaînement d\'effondrements</span>, de mensonges institutionnels et de dérives technocratiques en une issue presque harmonieuse. Interstellar propose dans son dénouement un futur où une humanité réduite, fragilisée et réfugiée dans une structure spatiale artificielle parvient malgré tout à recréer une forme de quotidien apaisé. Cette utopie repose sur l\'idée qu\'une science extrême, <span class="highlight">quasi démiurgique</span>, peut miraculeusement devenir le prolongement d\'une théorie selon laquelle <span class="highlight">la gravité est la seule force capable de coexister entre les dimensions</span>, ce qui est scientifiquement spéculatif mais conceptuellement cohérent.',
+                'Finalement, alors même que le film critique la gestion technocratique du plan B, il confirme l\'idée que le salut vient malgré tout de la technoscience. Il la moralise, il l\'humanise, il la rend sensible, mais <span class="highlight">il la reconduit comme solution ultime.</span> L\'amour devient une force narrative qui harmonise ce qui, dans la réalité, relèverait de tensions politiques insolubles. Cette articulation entre <span class="highlight">science extrême et affect pur fonctionne esthétiquement,</span> c\'est l\'un des grands pouvoirs du film, mais elle masque aussi un aspect <span class="highlight">idéologiquement conservateur</span> : l\'aplanissement des conflits, la dépolitisation de l\'effondrement, la naturalisation de l\'inégalité entre ceux qui savent et ceux qui ne savent pas. <br><br>Ainsi, Interstellar oscille entre une <span class="highlight">critique implicite du présent,</span> effondrement écologique, déni du savoir, manipulations institutionnelles et une <span class="highlight">reconduction des récits dominants de notre époque</span> : héroïsme individuel, foi dans la grande solution technologique, déplacement spatial plutôt que transformation sociale. Le futur qu\'il propose est à la fois étranger et rassurant, vertigineux et familier, profondément spéculatif mais idéologiquement conservateur. Il offre une altérité spectaculaire, mais une continuité politique : <span class="highlight">un monde nouveau, façonné pour n\'être finalement que le reflet légèrement distordu de l\'ancien.</span>'
+            ];
             
-            allWords.forEach((word, i) => {
-                const dist = i - index;
-                let op = 0.05;
-                if (dist < 0) op = dist >= -5 ? 1 - Math.abs(dist) / 5 * 0.95 : 0.05;
-                else if (dist === 0) op = 1;
-                else if (dist <= 10) op = 1;
-                else if (dist <= 15) op = 1 - (dist - 10) / 5 * 0.85;
-                else op = 0.15;
-                word.style.opacity = op;
+            // Restaurer le texte de TOUS les blocs
+            panoramaBlocks.forEach((block, i) => {
+                const p = block.querySelector('p');
+                if (p) p.innerHTML = loremTexts[i];
             });
-            index++;
+            
+            // Préparer les spans pour TOUS les blocs (sans lancer l'animation)
+            panoramaBlocks.forEach(block => {
+                const p = block.querySelector('p');
+                if (p) prepareKaraokeSpans(p);
+            });
+            
+            // Surveiller la visibilité de chaque bloc
+            panoramaBlocks.forEach((block, index) => {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
+                            // Le bloc est visible à plus de 30%
+                            const p = block.querySelector('p');
+                            if (p && !block.dataset.karaokeStarted) {
+                                block.dataset.karaokeStarted = 'true';
+                                startKaraokeAnimation(p);
+                            }
+                        }
+                    });
+                }, {
+                    threshold: [0, 0.3, 0.5, 1]
+                });
+                
+                observer.observe(block);
+            });
+            
+            return; // Sortir ici
         }
         
-        // AJOUTER LE DÉLAI DE 2 SECONDES
-        if (interval) clearInterval(interval);
+        // SINON, traiter analyse ou texte normal
+        const p = analysisP || textP;
+        if (!p) return;
+
+        if (analysisP) {
+            p.innerHTML = chapters[5].text;
+        } else {
+            p.innerHTML = chapters[currentChapter].text;
+        }
         
-        setTimeout(() => {
-            interval = setInterval(update, 250);
-            update(); // Premier update immédiat après le délai
-        }, 2000); // Délai de 2 secondes (2000ms)
+        applyKaraokeToElement(p);
     }
     
     setTimeout(startKaraoke, 0); // 2100ms au lieu de 100ms (2s de délai + 100ms de sécurité)
 }
 
-// ===== PANORAMA (code existant conservé) =====
+
+
+//MODE H - KARAOKE
+function applyKaraokeToElement(p) {
+    const walker = document.createTreeWalker(p, NodeFilter.SHOW_TEXT);
+    const textNodes = [];
+    let node;
+    while (node = walker.nextNode()) if (node.textContent.trim()) textNodes.push(node);
+    
+    textNodes.forEach(textNode => {
+        const words = textNode.textContent.split(/(\s+)/);
+        const fragment = document.createDocumentFragment();
+        words.forEach(word => {
+            if (word.trim()) {
+                const span = document.createElement('span');
+                span.className = 'word-span';
+                span.textContent = word;
+                span.style.opacity = '0.15';
+                fragment.appendChild(span);
+            } else {
+                fragment.appendChild(document.createTextNode(word));
+            }
+        });
+        textNode.parentNode.replaceChild(fragment, textNode);
+    });
+    
+    // RÉCUPÉRER TOUS LES MOTS APRÈS TRANSFORMATION
+    const allWords = p.querySelectorAll('.word-span');
+    let index = 0;
+    
+    function update() {
+        if (index >= allWords.length) index = 0;
+        
+        allWords.forEach((word, i) => {
+            const dist = i - index;
+            let op = 0.05;
+            if (dist < 0) op = dist >= -5 ? 1 - Math.abs(dist) / 5 * 0.95 : 0.05;
+            else if (dist === 0) op = 1;
+            else if (dist <= 10) op = 1;
+            else if (dist <= 15) op = 1 - (dist - 10) / 5 * 0.85;
+            else op = 0.15;
+            word.style.opacity = op;
+        });
+        index++;
+    }
+    
+    // STOCKER L'INTERVAL GLOBALEMENT
+    if (window.karaokeInterval) clearInterval(window.karaokeInterval);
+    
+    setTimeout(() => {
+        window.karaokeInterval = setInterval(update, 250);
+        update();
+    }, 0);
+}
+
+// KARAOKE PREPARE
+function prepareKaraokeSpans(p) {
+    const walker = document.createTreeWalker(p, NodeFilter.SHOW_TEXT);
+    const textNodes = [];
+    let node;
+    while (node = walker.nextNode()) if (node.textContent.trim()) textNodes.push(node);
+    
+    textNodes.forEach(textNode => {
+        const words = textNode.textContent.split(/(\s+)/);
+        const fragment = document.createDocumentFragment();
+        words.forEach(word => {
+            if (word.trim()) {
+                const span = document.createElement('span');
+                span.className = 'word-span';
+                span.textContent = word;
+                span.style.opacity = '0.15';
+                fragment.appendChild(span);
+            } else {
+                fragment.appendChild(document.createTextNode(word));
+            }
+        });
+        textNode.parentNode.replaceChild(fragment, textNode);
+    });
+}
+
+// KARAOKE RESTART START
+function startKaraokeAnimation(p) {
+    const allWords = p.querySelectorAll('.word-span');
+    let index = 0;
+    
+    function update() {
+        if (index >= allWords.length) index = 0;
+        
+        allWords.forEach((word, i) => {
+            const dist = i - index;
+            let op = 0.05;
+            if (dist < 0) op = dist >= -5 ? 1 - Math.abs(dist) / 5 * 0.95 : 0.05;
+            else if (dist === 0) op = 1;
+            else if (dist <= 10) op = 1;
+            else if (dist <= 15) op = 1 - (dist - 10) / 5 * 0.85;
+            else op = 0.15;
+            word.style.opacity = op;
+        });
+        index++;
+    }
+    
+    // Créer un interval unique pour ce paragraphe
+    const intervalId = setInterval(update, 250);
+    
+    // Stocker l'interval dans le DOM pour pouvoir le nettoyer
+    p.dataset.karaokeInterval = intervalId;
+    
+    update();
+}
+
+
+
+
+
+//PANORAMA
 function displayPanoramaChapter(chapter) {
     console.log('🎬 Affichage chapitre panorama');
     
@@ -770,71 +974,33 @@ function displayPanoramaChapter(chapter) {
     // Textes défilants
     const textScrollContainer = document.createElement('div');
     textScrollContainer.id = 'text-scroll-container';
-    textScrollContainer.style.cssText = `position: fixed; top: 50%; left: 0; transform: translateY(-50%); width: 100vw; height: auto; z-index: 99; pointer-events: none; display: flex; gap: ${window.innerWidth * 0.6}px; will-change: transform; padding-left: ${window.innerWidth * 0.3}px;`;
+    // Positionner le texte SOUS le panorama (en dessous de topMargin + hauteur du pano)
+    const textTopPosition = 600; // +40px de marge
+    textScrollContainer.style.cssText = `position: fixed; top: ${textTopPosition}px; left: 0; width: 100vw; height: auto; z-index: 99; pointer-events: none; display: flex; gap: ${window.innerWidth * 0.6}px; will-change: transform; padding-left: ${window.innerWidth * 0.3}px;`;
     
     const loremTexts = [
-        { text: "Le temps, dans Interstellar, n'est pas une constante universelle mais une dimension malléable, courbée par la gravité et fragmentée entre les mondes. Christopher Nolan transforme une théorie d'astrophysique en expérience émotionnelle brute." },
-        { text: "Sur la planète Miller, une heure équivaut à sept années terrestres. Le spectateur ressent physiquement le poids du temps perdu, l'angoisse d'un père qui voit sa fille vieillir à distance, prisonnière d'une physique implacable." },
-        { text: "Le tesseract matérialise l'impossible : un espace où passé, présent et futur coexistent. Cooper traverse les dimensions pour communiquer avec sa fille à travers le temps, utilisant la gravité comme seul langage universel." },
-        { text: "Cette représentation visuelle du continuum espace-temps traduit les théories de Kip Thorne en une métaphore du lien paternel. La science devient affect, la physique devient amour." }
+        { text: 'Le futur décrit par Christopher Nolan en 2014 est sobre mais peu éloigné de notre réalité. Il imagine, dans une vision plutôt court-terme, nos sociétés une soixantaine d`années plus loin. Le monde n’a pas changé drastiquement mais à visiblement suivi un <span class="highlight">glissement progréssif vers un appauvrissement global</span> : La qualité de l’air s’est grandement dégradée, les ressources de nourritures ont manqué, les professionnels des groupes tertiaires et secondaires ont été amenés à se retourner vers le secteur primaire. Comme dis plus tôt, la population s’est réduite, les Hommes qui ont survécu ont été contraints de se tourner vers la production de ressources collectives et essentielles.<br><br>Est-ce l’œuvre de l’homme qui a mené à sa perte ? Le scénario reste <span class="highlight">plutôt discret sur les raisons de cet effondrement.</span> Cependant, on observe clairement une négation des sciences et un refus des technologies dans la société de l’époque décrite par Christopher Nolan : Murphy est exclue pendant trois jours pour avoir défendu la véracité des pas de Neil Armstrong sur la Lune. Dès lors, on peut supposer un positionnement du réalisateur, qui laisse entendre <span class="highlight">qu’un usage excessif des technologies aurait fini par pousser l’humanité à les rejeter, à les exclure de son quotidien</span> et à reconstruire un futur qui lui semblerait plus sain.' },
+        { text: 'Mais très vite, Murphy, Cooper et le spectateur font la découverte du programme Endurance. Paradoxalement, alors même que l’État enseigne aux élèves que la technologie est inutile, dangereuse ou mensongère, il continue en secret de préparer et de financer le futur programme spatial. Tandis qu’on prêche publiquement un retour à la terre et une méfiance totale envers les sciences, <span class="highlight">une élite scientifique travaille clandestinement à créer une nouvelle humanité ailleurs.</span> Cette hypocrisie est renforcée par le fait que la véritable mission n’a jamais été de sauver la population terrestre : le plan A, <span class="highlight">celui d’un exode collectif,</span> pour lequel Cooper est missionné pour trouver une planète d’exil <span class="highlight">n’a jamais vraiment existé.</span> Le but réel, le plan B de faire naître des milliers d’embryons sur une autre planète habitable, en abandonnant ceux restés sur Terre.<br><br>Évidemment, Cooper, en tant que héros du film, refuse cette logique froide et technocratique. <span class="highlight">Il fait le choix du cœur : celui de sauver sa fille, de tenter de la retrouver, et par extension celui de sauver les habitants de la Terre.</span> Il devient le seul à croire encore au plan A, quand bien même aucune planète réellement habitable n’a été trouvée durant leur voyage. Il renonce finalement à poursuivre l’exploration pour revenir vers ce qui l’attache au monde, quittant le champ de la mission pour celui du lien familial.' },
+        { text: 'La fin du film laisse d’ailleurs entendre que la Terre, ou plutôt l’humanité, a survécu grâce à cette décision. Les images de l’outro montrent un espace qui <span class="highlight">n’obéit plus aux lois dimensionnelles ordinaires</span> : un horizon vertical, une courbure étrange de l’espace, une station cylindrique qui imite la gravité par rotation. Tout semble évoquer un monde construit selon les principes découverts dans le tesseract. On comprend que les humains ne vivent plus sur Terre, mais dans <span class="highlight">une structure artificielle où la réalité paraît presque virtuelle</span>, comme un environnement simulé pour <span class="highlight">reproduire la vie terrestre.</span><br><br>Ce qui nous semble utopique, c’est la manière dont le film transforme un <span class="highlight">enchaînement d’effondrements</span>, de mensonges institutionnels et de dérives technocratiques en une issue presque harmonieuse. Interstellar propose dans son dénouement un futur où une humanité réduite, fragilisée et réfugiée dans une structure spatiale artificielle parvient malgré tout à recréer une forme de quotidien apaisé. Cette utopie repose sur l’idée qu’une science extrême, <span class="highlight">quasi démiurgique</span>, peut miraculeusement devenir le prolongement d’une théorie selon laquelle <span class="highlight">la gravité est la seule force capable de coexister entre les dimensions</span>, ce qui est scientifiquement spéculatif mais conceptuellement cohérent.' },
+        { text: 'Finalement, alors même que le film critique la gestion technocratique du plan B, il confirme l’idée que le salut vient malgré tout de la technoscience. Il la moralise, il l’humanise, il la rend sensible, mais <span class="highlight">il la reconduit comme solution ultime.</span> L’amour devient une force narrative qui harmonise ce qui, dans la réalité, relèverait de tensions politiques insolubles. Cette articulation entre <span class="highlight">science extrême et affect pur fonctionne esthétiquement,</span> c’est l’un des grands pouvoirs du film, mais elle masque aussi un aspect <span class="highlight">idéologiquement conservateur</span> : l’aplanissement des conflits, la dépolitisation de l’effondrement, la naturalisation de l’inégalité entre ceux qui savent et ceux qui ne savent pas. <br><br>Ainsi, Interstellar oscille entre une <span class="highlight">critique implicite du présent,</span> effondrement écologique, déni du savoir, manipulations institutionnelles et une <span class="highlight">reconduction des récits dominants de notre époque</span> : héroïsme individuel, foi dans la grande solution technologique, déplacement spatial plutôt que transformation sociale. Le futur qu’il propose est à la fois étranger et rassurant, vertigineux et familier, profondément spéculatif mais idéologiquement conservateur. Il offre une altérité spectaculaire, mais une continuité politique : <span class="highlight">un monde nouveau, façonné pour n’être finalement que le reflet légèrement distordu de l’ancien.</span>' }
     ];
 
     loremTexts.forEach((textData, index) => {
         const textBlock = document.createElement('div');
         textBlock.className = 'scroll-text-block';
         textBlock.style.cssText = `min-width: 600px; max-width: 700px; padding: 0; background: transparent; opacity: 0; transition: opacity 0.5s ease;`;
-        textBlock.innerHTML = `<p style="margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 22px; line-height: 1.8; color: #333; font-weight: 300; letter-spacing: 0.3px;">${textData.text}</p>`;
+        
+        // AJOUTER font-family: inherit dans le <p> pour que .highlight hérite de la typo du chapitre 2/3
+        textBlock.innerHTML = `<p style="margin: 0; font-size: 14px; line-height: 1.6; color: #333; font-weight: 300; letter-spacing: 0.3px;">${textData.text}</p>`;
+        
         textScrollContainer.appendChild(textBlock);
     });
 
     document.body.appendChild(textScrollContainer);
-    
-    // Sous-titres
-    const subtitleContainer = document.createElement('div');
-    subtitleContainer.id = 'panorama-subtitle-container';
-    subtitleContainer.style.cssText = `position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 1000px; text-align: center; z-index: 100; opacity: 0; transition: opacity 0.8s ease; pointer-events: none;`;
-    
-    const subtitle = document.createElement('p');
-    subtitle.id = 'panorama-subtitle-text';
-    subtitle.style.cssText = `margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 18px; line-height: 1.6; color: #333; font-weight: 300; letter-spacing: 0.5px;`;
-    subtitle.textContent = '';
-    
-    subtitleContainer.appendChild(subtitle);
-    document.body.appendChild(subtitleContainer);
-    
-    const panoramaSubtitles = [
-        { text: "La dilatation temporelle devient palpable, chaque seconde compte double...", duration: 4 },
-        { text: "Entre deux mondes, le temps se fragmente et se distord.", duration: 3 },
-        { text: "Dans le tesseract, toutes les temporalités coexistent simultanément.", duration: 4 },
-        { text: "La gravité transcende les dimensions, seul vecteur de communication.", duration: 4 },
-        { text: "Le passé, le présent et le futur ne font qu'un dans cet espace-temps courbé.", duration: 5 }
-    ];
-    
-    let subtitleIndex = 0;
-    let subtitleTimer = null;
-    
-    function displayNextSubtitle() {
-        if (subtitleIndex >= panoramaSubtitles.length) {
-            subtitleContainer.style.opacity = '0';
-            return;
-        }
-        
-        const currentSubtitle = panoramaSubtitles[subtitleIndex];
-        subtitle.textContent = currentSubtitle.text;
-        subtitleContainer.style.opacity = '1';
-        
-        const brightness = parseInt(fullPageOverlay.style.backgroundColor.match(/\d+/)[0]);
-        subtitle.style.color = brightness < 128 ? 'white' : '#333';
-        
-        setTimeout(() => {
-            subtitleContainer.style.opacity = '0';
-            setTimeout(() => {
-                subtitleIndex++;
-                displayNextSubtitle();
-            }, 1000);
-        }, currentSubtitle.duration * 1000);
-    }
-    
+
+    // ACTIVER LE TOGGLE H/L POUR LE CHAPITRE 4
+    createReadingModeToggle();
+
     let imagesLoaded = 0;
     let totalWidth = 0;
     let scrollPosition = 0;
@@ -901,14 +1067,8 @@ function displayPanoramaChapter(chapter) {
                         });
                         
                         textScrollContainer.style.transform = `translateX(-${scrollPosition * 0.65}px) translateY(-50%)`;
-                        subtitleContainer.style.opacity = '0';
                     } else {
                         textScrollContainer.style.opacity = '0';
-                        
-                        if (!subtitleTimer && subtitleIndex === 0) {
-                            displayNextSubtitle();
-                            subtitleTimer = true;
-                        }
                     }
                     
                     const gradientStart = pano2StartPosition + (img2Width * 0.2);
@@ -916,9 +1076,7 @@ function displayPanoramaChapter(chapter) {
                     const gradientProgress = Math.max(0, Math.min(1, (scrollPosition - gradientStart) / (gradientEnd - gradientStart)));
                     
                     const brightness = Math.floor(255 * (1 - gradientProgress));
-                    fullPageOverlay.style.backgroundColor = `rgb(${brightness}, ${brightness}, ${brightness})`;
-                    subtitle.style.color = brightness < 128 ? 'white' : '#333';
-                    
+                    fullPageOverlay.style.backgroundColor = `rgb(${brightness}, ${brightness}, ${brightness})`;                    
                     const pano2Progress = Math.max(0, (scrollPosition - pano1EndPosition) / img2Width);
 
                     if (scrollPosition > pano1EndPosition) {
@@ -929,14 +1087,12 @@ function displayPanoramaChapter(chapter) {
                     }
                     
                     const blackScreenProgress = (scrollPosition - totalWidth) / extraBlackSpace;
-                    
+
                     if (blackScreenProgress >= 0.95 && !panoramaContainer.dataset.transitioned) {
                         panoramaContainer.dataset.transitioned = 'true';
                         
-                        if (subtitleTimer) clearTimeout(subtitleTimer);
-                        
                         const transitionOverlay = document.createElement('div');
-                        transitionOverlay.style.cssText = `position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: black; z-index: 9500; opacity: 0; transition: opacity 1s ease-in-out;`;
+                        transitionOverlay.style.cssText = `position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: black; z-index: 10000; opacity: 0; transition: opacity 1s ease-in-out;`;
                         document.body.appendChild(transitionOverlay);
                         
                         setTimeout(() => transitionOverlay.style.opacity = '1', 100);
@@ -948,7 +1104,7 @@ function displayPanoramaChapter(chapter) {
                             animationRunning = false;
                             isAutoScrolling = false;
                             textScrollContainer.remove();
-                            subtitleContainer.remove();
+                            finalTextContainer.remove();
                             panoramaContainer.remove();
                             fullPageOverlay.remove();
                             particleCanvas.remove();
@@ -999,4 +1155,70 @@ function displayPanoramaChapter(chapter) {
     
     panoramaContainer.appendChild(bande);
     document.body.appendChild(panoramaContainer);
+}
+
+//CHAPITRE FOND NOIR + TEXTE DÉFILANT
+function displayAnalysisChapter(chapter) {
+    console.log('📖 Affichage chapitre analyse');
+    
+    const nav = document.getElementById('chapter-navigation');
+    if (nav) nav.style.display = 'flex';
+    
+    // LES PARTICULES ET LE FOND NOIR EXISTENT DÉJÀ DU CHAPITRE 4
+    // On garde juste le canvas et le dégradé noir existants
+    
+    const particleCanvas = document.getElementById('particle-canvas');
+    const fullPageOverlay = document.getElementById('full-page-gradient');
+    
+    if (particleCanvas) particleCanvas.style.opacity = '1';
+    if (fullPageOverlay) fullPageOverlay.style.backgroundColor = 'black';
+    
+    // CONTENEUR DE TEXTE SCROLLABLE
+    const textContainer = document.createElement('div');
+    textContainer.id = 'analysis-text-container';
+    textContainer.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 60%;
+        max-width: 900px;
+        max-height: 80vh;
+        overflow-y: auto;
+        z-index: 100;
+        padding: 60px 40px 100px 40px;
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-size: 18px;
+        line-height: 1.8;
+        color: white;
+        font-weight: 300;
+        letter-spacing: 0.3px;
+    `;
+    
+    textContainer.innerHTML = `<p style="margin: 0;">${chapter.text}</p>`;
+    
+    document.body.appendChild(textContainer);
+    
+    // ACTIVER LE TOGGLE H/L
+    createReadingModeToggle();
+    
+    // DÉTECTER FIN DE SCROLL → PASSER AU CHAPITRE 6
+    let scrollTimeout;
+    textContainer.addEventListener('scroll', () => {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            const scrollHeight = textContainer.scrollHeight;
+            const scrollTop = textContainer.scrollTop;
+            const clientHeight = textContainer.clientHeight;
+            
+            // Si on est à moins de 50px de la fin
+            if (scrollHeight - scrollTop - clientHeight < 50) {
+                console.log('📖 Fin de l\'analyse, passage à la vidéo...');
+                setTimeout(() => {
+                    textContainer.remove();
+                    displayChapter(6);
+                }, 1000);
+            }
+        }, 150);
+    });
 }
