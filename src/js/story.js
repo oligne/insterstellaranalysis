@@ -432,7 +432,7 @@ function displayEndPage() {
                 ENSAAMA Olivier de Serres, Novembre 2025<br><br>
                 Sources Audio : Hans Zimmer - Interstellar BO<br>
                 Sources Vidéo : Interstellar, Christopher Nolan, 2014<br><br>
-                <a href="https://docs.google.com/document/d/1kYcV186RWo1c_o4bFzit8ihoiKo_Mh2gqQsgnGs-ZTc/edit?usp=sharing" target="_blank" style="color: #333; text-decoration: underline;">
+                <a href="https://drive.google.com/file/d/1OQZHhjTIfqKE4q0D622TmzKN_lxoaWOW/view?usp=sharing" target="_blank" style="color: #333; text-decoration: underline;">
                     Accès à la version rédigée du texte (Google Drive)
                 </a>
             </span>
