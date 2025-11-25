@@ -1034,7 +1034,7 @@ function displayPanoramaChapter(chapter) {
                 totalWidth = img1Width + img2Width + img3Width - chapter.panoramas[2].overlapAmount;
                 pano3EndPosition = totalWidth;
                 
-                const extraBlackSpace = window.innerWidth * 2;
+                const extraBlackSpace = 1;
                 const finalScrollEnd = totalWidth + extraBlackSpace;
                 
                 animationRunning = true;
@@ -1088,7 +1088,7 @@ function displayPanoramaChapter(chapter) {
                     
                     const blackScreenProgress = (scrollPosition - totalWidth) / extraBlackSpace;
 
-                    if (blackScreenProgress >= 0.95 && !panoramaContainer.dataset.transitioned) {
+                    if (blackScreenProgress >= 0.5 && !panoramaContainer.dataset.transitioned) {
                         panoramaContainer.dataset.transitioned = 'true';
                         
                         const transitionOverlay = document.createElement('div');
@@ -1103,11 +1103,10 @@ function displayPanoramaChapter(chapter) {
                             }
                             animationRunning = false;
                             isAutoScrolling = false;
-                            textScrollContainer.remove();
-                            finalTextContainer.remove();
+                            if (textScrollContainer) textScrollContainer.remove();
                             panoramaContainer.remove();
-                            fullPageOverlay.remove();
-                            particleCanvas.remove();
+                            ///fullPageOverlay.remove();
+                            ///particleCanvas.remove();
                             
                             displayChapter(5);
                             setTimeout(() => {
